@@ -65,7 +65,7 @@ export default function CreateEmployee() {
 
           <div>
             <label htmlFor="zipCode">Zip code</label>
-            <input id="zipCode" type="number" {...register("zipCode")} />
+            <input id="zipCode" type="text" pattern="[0-9]{5}" {...register("zipCode")} />
           </div>
         </fieldset>
 
