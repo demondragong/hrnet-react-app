@@ -1,12 +1,14 @@
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
-import { states } from "../data/usStates";
+import { usStates } from "../data/usStates";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import { useState } from "react";
+import Modal from "../components/Modal";
+import { companyDepartments } from "../data/companyDepartments";
 
 export default function CreateEmployee() {
   const {
@@ -19,18 +21,20 @@ export default function CreateEmployee() {
 
   const [startDate, setStartDate] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
+  const [showModal, setShowModal] = useState(false);
+
+  const closeModal = () => setShowModal(false)
 
   const dispatch = useDispatch();
-  const onSubmit = (data) => dispatch(addEmployee(data));
-
-  const stateOptions = states.map((state) => (
-    <option value={state.abbreviation} key={state.abbreviation}>
-      {state.name}
-    </option>
-  ));
+  const onSubmit = (data) => {
+    dispatch(addEmployee(data));
+    setShowModal(true)
+  }
+  
 
   return (
     <>
+      {showModal && <Modal content="i am content" closeModal={closeModal}/>}
       <h1>Create Employee</h1>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,9 +101,17 @@ export default function CreateEmployee() {
 
           <div>
             <label htmlFor="state">State</label>
-            <select id="state" {...register("state")}>
-              {stateOptions}
-            </select>
+            <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <Select
+                id="state"
+                {...field}
+                options={usStates}
+              />
+            )}
+          />
           </div>
 
           <div>
@@ -121,13 +133,7 @@ export default function CreateEmployee() {
             render={({ field }) => (
               <Select
                 {...field}
-                options={[
-                  { value: "Sales", label: "Sales" },
-                  { value: "Marketing", label: "Marketing" },
-                  { value: "Engineering", label: "Engineering" },
-                  { value: "Human Resources", label: "Human Resources" },
-                  { value: "Legal", label: "Legal" },
-                ]}
+                options={companyDepartments}
               />
             )}
           />
