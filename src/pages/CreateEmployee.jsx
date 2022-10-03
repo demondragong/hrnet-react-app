@@ -1,10 +1,15 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
 import { states } from "../data/usStates";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
 
 export default function CreateEmployee() {
   const {
+    control,
     register,
     handleSubmit,
     watch,
@@ -14,9 +19,11 @@ export default function CreateEmployee() {
   const dispatch = useDispatch();
   const onSubmit = (data) => dispatch(addEmployee(data));
 
-  const stateOptions = states.map(state =>
-    <option value={state.abbreviation} key={state.abbreviation}>{state.name}</option>
-  )
+  const stateOptions = states.map((state) => (
+    <option value={state.abbreviation} key={state.abbreviation}>
+      {state.name}
+    </option>
+  ));
 
   return (
     <>
@@ -40,7 +47,18 @@ export default function CreateEmployee() {
 
         <div>
           <label htmlFor="startDate">Start date</label>
-          <input id="startDate" type="date" {...register("startDate")} />
+          <Controller
+            name="startDate"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <DatePicker
+                id="startDate"
+                selected={value}
+                onChange={onChange}
+                dateFormat="yyyy/MM/dd"
+              />
+            )}
+          />
         </div>
 
         <fieldset>
@@ -65,19 +83,33 @@ export default function CreateEmployee() {
 
           <div>
             <label htmlFor="zipCode">Zip code</label>
-            <input id="zipCode" type="text" pattern="[0-9]{5}" {...register("zipCode")} />
+            <input
+              id="zipCode"
+              type="text"
+              pattern="[0-9]{5}"
+              {...register("zipCode")}
+            />
           </div>
         </fieldset>
 
         <div>
           <label htmlFor="department">Department</label>
-          <select id="department" {...register("department")}>
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Engineering</option>
-            <option>Human Resources</option>
-            <option>Legal</option>
-          </select>
+          <Controller
+            name="select"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                options={[
+                  { value: "Sales", label: "Sales" },
+                  { value: "Marketing", label: "Marketing" },
+                  { value: "Engineering", label: "Engineering" },
+                  { value: "Human Resources", label: "Human Resources" },
+                  { value: "Legal", label: "Legal" },
+                ]}
+              />
+            )}
+          />
         </div>
 
         <input type="submit" />
