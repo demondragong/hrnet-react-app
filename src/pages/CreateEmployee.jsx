@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
+import { useState } from "react";
 
 export default function CreateEmployee() {
   const {
@@ -15,6 +16,9 @@ export default function CreateEmployee() {
     watch,
     formState: { errors },
   } = useForm();
+
+  const [startDate, setStartDate] = useState();
+  const [dateOfBirth, setDateOfBirth] = useState();
 
   const dispatch = useDispatch();
   const onSubmit = (data) => dispatch(addEmployee(data));
@@ -42,7 +46,21 @@ export default function CreateEmployee() {
 
         <div>
           <label htmlFor="dateOfBirth">Date of birth</label>
-          <input id="dateOfBirth" type="date" {...register("dateOfBirth")} />
+          <Controller
+            name="dateOfBirth"
+            control={control}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <DatePicker
+                id="dateOfBirth"
+                onChange={(date) => {
+                  setDateOfBirth(date);
+                  return onChange(date.toLocaleDateString("en-US"));
+                }}
+                onBlur={onBlur}
+                selected={dateOfBirth}
+              />
+            )}
+          />
         </div>
 
         <div>
@@ -50,12 +68,15 @@ export default function CreateEmployee() {
           <Controller
             name="startDate"
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <DatePicker
                 id="startDate"
-                selected={value}
-                onChange={onChange}
-                dateFormat="yyyy/MM/dd"
+                onChange={(date) => {
+                  setStartDate(date);
+                  return onChange(date.toLocaleDateString("en-US"));
+                }}
+                onBlur={onBlur}
+                selected={startDate}
               />
             )}
           />
@@ -95,7 +116,7 @@ export default function CreateEmployee() {
         <div>
           <label htmlFor="department">Department</label>
           <Controller
-            name="select"
+            name="department"
             control={control}
             render={({ field }) => (
               <Select
