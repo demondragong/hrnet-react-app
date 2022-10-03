@@ -1,13 +1,13 @@
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
 import { usStates } from "../data/usStates";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
-import { useState } from "react";
-import Modal from "../components/Modal";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import DialogModal from "../components/DialogModal";
 import { companyDepartments } from "../data/companyDepartments";
 
 export default function CreateEmployee() {
@@ -23,18 +23,16 @@ export default function CreateEmployee() {
   const [dateOfBirth, setDateOfBirth] = useState();
   const [showModal, setShowModal] = useState(false);
 
-  const closeModal = () => setShowModal(false)
+  const closeModal = () => setShowModal(false);
 
   const dispatch = useDispatch();
   const onSubmit = (data) => {
     dispatch(addEmployee(data));
     setShowModal(true)
-  }
-  
+  };
 
   return (
     <>
-      {showModal && <Modal content="i am content" closeModal={closeModal}/>}
       <h1>Create Employee</h1>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,16 +100,12 @@ export default function CreateEmployee() {
           <div>
             <label htmlFor="state">State</label>
             <Controller
-            name="state"
-            control={control}
-            render={({ field }) => (
-              <Select
-                id="state"
-                {...field}
-                options={usStates}
-              />
-            )}
-          />
+              name="state"
+              control={control}
+              render={({ field }) => (
+                <Select id="state" {...field} options={usStates} />
+              )}
+            />
           </div>
 
           <div>
@@ -131,16 +125,14 @@ export default function CreateEmployee() {
             name="department"
             control={control}
             render={({ field }) => (
-              <Select
-                {...field}
-                options={companyDepartments}
-              />
+              <Select {...field} options={companyDepartments} />
             )}
           />
         </div>
 
         <input type="submit" />
       </form>
+      <DialogModal showModal={showModal} content="Employee created!" closeModal={closeModal} />
     </>
   );
 }
