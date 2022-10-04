@@ -139,7 +139,6 @@ export default function EmployeeList() {
   const [searchString, setSearchString] = React.useState("");
 
   //   const rows = useSelector((state) => state.employees);
-
   const rows = mockEmployees.filter(employee => Object.values(employee).toString().toLowerCase().includes(searchString.toLowerCase()));
 
   const handleRequestSort = (event, property) => {

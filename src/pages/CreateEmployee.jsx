@@ -21,30 +21,34 @@ export default function CreateEmployee() {
 
   const [startDate, setStartDate] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
-  const [showModal, setShowModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const closeModal = () => setShowModal(false);
+  const closeModal = () => setIsModalVisible(false);
 
   const dispatch = useDispatch();
   const onSubmit = (data) => {
     dispatch(addEmployee(data));
-    setShowModal(true)
+    setIsModalVisible(true);
   };
+
+  const Input = ({ label, id, register, required }) => (
+    <>
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        className="block w-full bg-slate-100 h-8 rounded-md"
+        {...register(id, { required })}
+      />
+    </>
+  );
 
   return (
     <>
-      <h1>Create Employee</h1>
+      <h1 className="text-3xl font-bold">Create a new employee</h1>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input id="firstName" {...register("firstName")} />
-        </div>
-
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input id="lastName" {...register("lastName")} />
-        </div>
+      <form className="max-w-sm m-auto p-2 bg-white flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <Input label="First name" id="firstName" register={register} required />
+        <Input label="Last name" id="lastName" register={register} required />
 
         <div>
           <label htmlFor="dateOfBirth">Date of birth</label>
@@ -86,17 +90,8 @@ export default function CreateEmployee() {
 
         <fieldset>
           <legend>Address</legend>
-
-          <div>
-            <label htmlFor="street">Street</label>
-            <input id="street" {...register("street")} />
-          </div>
-
-          <div>
-            <label htmlFor="city">City</label>
-            <input id="city" {...register("city")} />
-          </div>
-
+          <Input label="Street" id="street" register={register} required />
+          <Input label="City" id="city" register={register} required />
           <div>
             <label htmlFor="state">State</label>
             <Controller
@@ -107,16 +102,7 @@ export default function CreateEmployee() {
               )}
             />
           </div>
-
-          <div>
-            <label htmlFor="zipCode">Zip code</label>
-            <input
-              id="zipCode"
-              type="text"
-              pattern="[0-9]{5}"
-              {...register("zipCode")}
-            />
-          </div>
+          <Input label="Zipcode" id="zipCode" register={register} required />
         </fieldset>
 
         <div>
@@ -132,7 +118,9 @@ export default function CreateEmployee() {
 
         <input type="submit" />
       </form>
-      <DialogModal showModal={showModal} content="Employee created!" closeModal={closeModal} />
+      <DialogModal isModalVisible={isModalVisible} closeModal={closeModal}>
+        <p>Employee created!</p>
+      </DialogModal>
     </>
   );
 }

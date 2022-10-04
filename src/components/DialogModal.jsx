@@ -1,18 +1,18 @@
 import { useEffect, useRef } from "react";
 
-export default function DialogModal({ showModal, content, closeModal }) {
+export default function DialogModal({ isModalVisible, children, closeModal }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (showModal) {
+    if (isModalVisible) {
       dialog.showModal();
       document.body.classList.add("modal-open"); // prevent bg scroll
     } else {
       dialog.close();
       document.body.classList.remove("modal-open");
     }
-  }, [showModal]);
+  }, [isModalVisible]);
 
   const preventAutoClose = (e) => e.stopPropagation();
 
@@ -20,7 +20,7 @@ export default function DialogModal({ showModal, content, closeModal }) {
     <dialog ref={dialogRef} onCancel={closeModal} onClick={closeModal} >
       <div onClick={preventAutoClose}>
         <button onClick={closeModal}>X</button>
-        <p>{content}</p>
+        {children}
       </div>
     </dialog>
   );
