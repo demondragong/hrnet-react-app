@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import logo from "../hrnet-logo.png";
+import Icon from "./Icon.jsx";
 
 export default function Header() {
   return (
-    <header className="flex flex-row justify-between items-center">
-      <img src={logo} className="w-32" alt="logo" />
+    <header className="my-5 flex flex-row justify-between items-center">
+      <Icon/>
       <nav>
         <Link to="/">Home</Link> |{" "}
         <Link to="/employee-list">Employee list</Link>

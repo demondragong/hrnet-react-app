@@ -33,65 +33,71 @@ export default function CreateEmployee() {
 
   const Input = ({ label, id, register, required }) => (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="mt-5">
+        {label}
+      </label>
       <input
         id={id}
-        className="block w-full bg-slate-100 h-8 rounded-md"
+        className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-md"
+        autoComplete="off"
         {...register(id, { required })}
+      />
+    </>
+  );
+
+  const ExternalInput = ({ label, id, dateState, setDateState }) => (
+    <>
+      <label htmlFor={id} className="mt-5">{label}</label>
+      <Controller
+        name={id}
+        control={control}
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <DatePicker
+            id={id}
+            autoComplete="off"
+            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-md"
+            onChange={(date) => {
+              setDateState(date);
+              return onChange(date.toLocaleDateString("en-US"));
+            }}
+            onBlur={onBlur}
+            selected={dateState}
+          />
+        )}
       />
     </>
   );
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Create a new employee</h1>
+      <h1 className="text-2xl font-medium">Create an employee</h1>
+      <p className="text-gray-700">
+        Fields marked with an asterisk are mandatory.
+      </p>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
-      <form className="max-w-sm m-auto p-2 bg-white flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-        <Input label="First name" id="firstName" register={register} required />
-        <Input label="Last name" id="lastName" register={register} required />
-
-        <div>
-          <label htmlFor="dateOfBirth">Date of birth</label>
-          <Controller
-            name="dateOfBirth"
-            control={control}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
-              <DatePicker
-                id="dateOfBirth"
-                onChange={(date) => {
-                  setDateOfBirth(date);
-                  return onChange(date.toLocaleDateString("en-US"));
-                }}
-                onBlur={onBlur}
-                selected={dateOfBirth}
-              />
-            )}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="startDate">Start date</label>
-          <Controller
-            name="startDate"
-            control={control}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
-              <DatePicker
-                id="startDate"
-                onChange={(date) => {
-                  setStartDate(date);
-                  return onChange(date.toLocaleDateString("en-US"));
-                }}
-                onBlur={onBlur}
-                selected={startDate}
-              />
-            )}
-          />
-        </div>
+      <form
+        className="max-w-sm m-auto flex flex-col"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Input label="First name*" id="firstName" register={register} required />
+        <Input label="Last name*" id="lastName" register={register} required />
+        <ExternalInput
+          label="Date of birth"
+          id="dateOfBirth"
+          dateState={dateOfBirth}
+          setDateState={setDateOfBirth}
+        />
+        <ExternalInput
+          label="Start date"
+          id="startDate"
+          dateState={startDate}
+          setDateState={setStartDate}
+        />
 
         <fieldset>
           <legend>Address</legend>
-          <Input label="Street" id="street" register={register} required />
-          <Input label="City" id="city" register={register} required />
+          <Input label="Street" id="street" register={register}  />
+          <Input label="City" id="city" register={register} />
           <div>
             <label htmlFor="state">State</label>
             <Controller
@@ -102,7 +108,7 @@ export default function CreateEmployee() {
               )}
             />
           </div>
-          <Input label="Zipcode" id="zipCode" register={register} required />
+          <Input label="Zipcode" id="zipCode" register={register} />
         </fieldset>
 
         <div>
@@ -116,7 +122,7 @@ export default function CreateEmployee() {
           />
         </div>
 
-        <input type="submit" />
+        <input className="bg-gray-200 h-8 my-4 rounded-md" type="submit" />
       </form>
       <DialogModal isModalVisible={isModalVisible} closeModal={closeModal}>
         <p>Employee created!</p>
