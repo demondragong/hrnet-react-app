@@ -135,11 +135,16 @@ export default function EmployeeList() {
   const [orderBy, setOrderBy] = React.useState("firstName");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
 
   //   const rows = useSelector((state) => state.employees);
-  const rows = mockEmployees.filter(employee => Object.values(employee).toString().toLowerCase().includes(searchString.toLowerCase()));
+  const rows = mockEmployees.filter((employee) =>
+    Object.values(employee)
+      .toString()
+      .toLowerCase()
+      .includes(searchString.toLowerCase())
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -170,7 +175,12 @@ export default function EmployeeList() {
 
   return (
     <>
-      <input id="search" onChange={handleSearch} />
+      <input
+        id="search"
+        placeholder="Search employees..."
+        className="w-64 block ml-auto mb-4 border border-gray-300 h-11 py-2.5 px-3.5 rounded-md"
+        onChange={handleSearch}
+      />
 
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
@@ -193,15 +203,15 @@ export default function EmployeeList() {
                   .map((row, index) => {
                     return (
                       <TableRow hover tabIndex={-1} key={row.firstName}>
-                        <TableCell align="right">{row.firstName}</TableCell>
-                        <TableCell align="right">{row.lastName}</TableCell>
-                        <TableCell align="right">{row.dateOfBirth}</TableCell>
-                        <TableCell align="right">{row.startDate}</TableCell>
-                        <TableCell align="right">{row.street}</TableCell>
-                        <TableCell align="right">{row.city}</TableCell>
-                        <TableCell align="right">{row.state}</TableCell>
-                        <TableCell align="right">{row.zipCode}</TableCell>
-                        <TableCell align="right">{row.department}</TableCell>
+                        <TableCell align="left">{row.firstName}</TableCell>
+                        <TableCell align="left">{row.lastName}</TableCell>
+                        <TableCell align="left">{row.dateOfBirth}</TableCell>
+                        <TableCell align="left">{row.startDate}</TableCell>
+                        <TableCell align="left">{row.street}</TableCell>
+                        <TableCell align="left">{row.city}</TableCell>
+                        <TableCell align="left">{row.state}</TableCell>
+                        <TableCell align="left">{row.zipCode}</TableCell>
+                        <TableCell align="left">{row.department}</TableCell>
                       </TableRow>
                     );
                   })}

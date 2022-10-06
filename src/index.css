@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 1280px;
+  padding: 1em;
+  margin: auto;
+}
+
+.MuiTableHead-root {
+  background-color: rgba(0, 0, 0, 0.1);
 }

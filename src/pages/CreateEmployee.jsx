@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import DialogModal from "../components/DialogModal";
 import { companyDepartments } from "../data/companyDepartments";
 
@@ -15,7 +15,6 @@ export default function CreateEmployee() {
     control,
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -69,14 +68,14 @@ export default function CreateEmployee() {
   );
 
   return (
-    <>
+    <main className="max-w-sm m-auto">
       <h1 className="text-2xl font-medium">Create an employee</h1>
       <p className="text-gray-700">
         Fields marked with an asterisk are mandatory.
       </p>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
       <form
-        className="max-w-sm m-auto flex flex-col"
+        className="flex flex-col"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input label="First name*" id="firstName" register={register} required />
@@ -123,10 +122,11 @@ export default function CreateEmployee() {
         </div>
 
         <input className="bg-gray-200 h-8 my-4 rounded-md" type="submit" />
+        <button className="bg-gray-200 h-8 my-4 rounded-md">Clear fields</button>
       </form>
       <DialogModal isModalVisible={isModalVisible} closeModal={closeModal}>
         <p>Employee created!</p>
       </DialogModal>
-    </>
+    </main>
   );
 }
