@@ -37,7 +37,7 @@ export default function CreateEmployee() {
       </label>
       <input
         id={id}
-        className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-md"
+        className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
         autoComplete="off"
         {...register(id, { required })}
       />
@@ -46,7 +46,9 @@ export default function CreateEmployee() {
 
   const ExternalInput = ({ label, id, dateState, setDateState }) => (
     <>
-      <label htmlFor={id} className="mt-5">{label}</label>
+      <label htmlFor={id} className="mt-5">
+        {label}
+      </label>
       <Controller
         name={id}
         control={control}
@@ -54,7 +56,7 @@ export default function CreateEmployee() {
           <DatePicker
             id={id}
             autoComplete="off"
-            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-md"
+            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
             onChange={(date) => {
               setDateState(date);
               return onChange(date.toLocaleDateString("en-US"));
@@ -74,11 +76,13 @@ export default function CreateEmployee() {
         Fields marked with an asterisk are mandatory.
       </p>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
-      <form
-        className="flex flex-col"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Input label="First name*" id="firstName" register={register} required />
+      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="First name*"
+          id="firstName"
+          register={register}
+          required
+        />
         <Input label="Last name*" id="lastName" register={register} required />
         <ExternalInput
           label="Date of birth"
@@ -95,7 +99,7 @@ export default function CreateEmployee() {
 
         <fieldset>
           <legend>Address</legend>
-          <Input label="Street" id="street" register={register}  />
+          <Input label="Street" id="street" register={register} />
           <Input label="City" id="city" register={register} />
           <div>
             <label htmlFor="state">State</label>
@@ -121,11 +125,31 @@ export default function CreateEmployee() {
           />
         </div>
 
-        <input className="bg-gray-200 h-8 my-4 rounded-md" type="submit" />
-        <button className="bg-gray-200 h-8 my-4 rounded-md">Clear fields</button>
+        <input
+          className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
+          type="submit"
+        />
+        <button className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg">
+          Clear fields
+        </button>
       </form>
-      <DialogModal isModalVisible={isModalVisible} closeModal={closeModal}>
-        <p>Employee created!</p>
+      <DialogModal
+        isModalVisible={isModalVisible}
+        closeModal={closeModal}
+        dialogClassName="max-w-md rounded-xl p-0 backdrop:bg-black/60"
+        divClassName="flex flex-col p-6 gap-2 justify-between items-center"
+      >
+        <h2 className="text-lg font-semibold">Employee created</h2>
+        <p className="text-sm text-gray-600	text-center">
+          This employee has been added to the database. You can view them in the
+          Employee list page.
+        </p>
+        <button
+          className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
+          onClick={closeModal}
+        >
+          Close
+        </button>
       </DialogModal>
     </main>
   );
