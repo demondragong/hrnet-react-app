@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import React, { useState } from "react";
-import DialogModal from "../components/DialogModal";
+import ModalDialog from "../components/ModalDialog";
 import { companyDepartments } from "../data/companyDepartments";
 
 export default function CreateEmployee() {
@@ -107,7 +107,7 @@ export default function CreateEmployee() {
               name="state"
               control={control}
               render={({ field }) => (
-                <Select id="state" {...field} options={usStates} />
+                <Select inputId="state" {...field} options={usStates} />
               )}
             />
           </div>
@@ -120,7 +120,7 @@ export default function CreateEmployee() {
             name="department"
             control={control}
             render={({ field }) => (
-              <Select {...field} options={companyDepartments} />
+              <Select inputId="department" {...field} options={companyDepartments} />
             )}
           />
         </div>
@@ -133,7 +133,7 @@ export default function CreateEmployee() {
           Clear fields
         </button>
       </form>
-      <DialogModal
+      <ModalDialog
         isModalVisible={isModalVisible}
         closeModal={closeModal}
         dialogClassName="max-w-md rounded-xl p-0 backdrop:bg-black/60"
@@ -150,7 +150,7 @@ export default function CreateEmployee() {
         >
           Close
         </button>
-      </DialogModal>
+      </ModalDialog>
     </main>
   );
 }

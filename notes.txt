@@ -1,7 +1,0 @@
-https://www.npmjs.com/package/react-datepicker
-https://github.com/jedwatson/react-select
-
-https://mui.com/material-ui/react-table/
-
-
-https://github.com/reactjs/react-modal

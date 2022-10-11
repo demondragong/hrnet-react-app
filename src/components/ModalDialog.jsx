@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export default function DialogModal({ isModalVisible, children, closeModal, dialogClassName, divClassName }) {
+export default function ModalDialog({ isModalVisible, children, closeModal, dialogClassName, divClassName }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
