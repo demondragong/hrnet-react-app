@@ -1,10 +1,9 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
 import { usStates } from "../data/usStates";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ModalDialog from "react-basic-modal-dialog";
 import { companyDepartments } from "../data/companyDepartments";
 import Input from "../components/Input";
@@ -16,7 +15,6 @@ export default function CreateEmployee() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm();
 
   const [startDate, setStartDate] = useState();
