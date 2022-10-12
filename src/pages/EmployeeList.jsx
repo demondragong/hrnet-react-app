@@ -138,13 +138,13 @@ export default function EmployeeList() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
 
-  //   const rows = useSelector((state) => state.employees);
-  const rows = mockEmployees.filter((employee) =>
-    Object.values(employee)
-      .toString()
-      .toLowerCase()
-      .includes(searchString.toLowerCase())
-  );
+    const rows = useSelector((state) => state.employees);
+  // const rows = mockEmployees.filter((employee) =>
+  //   Object.values(employee)
+  //     .toString()
+  //     .toLowerCase()
+  //     .includes(searchString.toLowerCase())
+  // );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

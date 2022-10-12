@@ -6,9 +6,12 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
-import React, { useState } from "react";
-import ModalDialog from "../components/ModalDialog";
+import React, { useEffect, useState } from "react";
+// import ModalDialog from "../components/ModalDialog";
+import ModalDialog from "react-basic-modal-dialog";
 import { companyDepartments } from "../data/companyDepartments";
+import Input from "../components/Input";
+import DateInput from "../components/DateInput";
 
 export default function CreateEmployee() {
   const {
@@ -20,54 +23,16 @@ export default function CreateEmployee() {
 
   const [startDate, setStartDate] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
 
-  const closeModal = () => setIsModalVisible(false);
+  const openDialog = () => setIsDialogVisible(true);
+  const closeDialog = () => setIsDialogVisible(false);
 
   const dispatch = useDispatch();
   const onSubmit = (data) => {
     dispatch(addEmployee(data));
-    setIsModalVisible(true);
+    openDialog();
   };
-
-  const Input = ({ label, id, register, required }) => (
-    <>
-      <label htmlFor={id} className="mt-5">
-        {label}
-      </label>
-      <input
-        id={id}
-        className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
-        autoComplete="off"
-        {...register(id, { required })}
-      />
-    </>
-  );
-
-  const ExternalInput = ({ label, id, dateState, setDateState }) => (
-    <>
-      <label htmlFor={id} className="mt-5">
-        {label}
-      </label>
-      <Controller
-        name={id}
-        control={control}
-        render={({ field: { onChange, onBlur, value, ref } }) => (
-          <DatePicker
-            id={id}
-            autoComplete="off"
-            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
-            onChange={(date) => {
-              setDateState(date);
-              return onChange(date.toLocaleDateString("en-US"));
-            }}
-            onBlur={onBlur}
-            selected={dateState}
-          />
-        )}
-      />
-    </>
-  );
 
   return (
     <main className="max-w-sm m-auto">
@@ -84,13 +49,15 @@ export default function CreateEmployee() {
           required
         />
         <Input label="Last name*" id="lastName" register={register} required />
-        <ExternalInput
+        <DateInput
+          control={control}
           label="Date of birth"
           id="dateOfBirth"
           dateState={dateOfBirth}
           setDateState={setDateOfBirth}
         />
-        <ExternalInput
+        <DateInput
+          control={control}
           label="Start date"
           id="startDate"
           dateState={startDate}
@@ -103,28 +70,34 @@ export default function CreateEmployee() {
           <Input label="City" id="city" register={register} />
           <div>
             <label htmlFor="state">State</label>
-            <Controller
-              name="state"
-              control={control}
-              render={({ field }) => (
-                <Select inputId="state" {...field} options={usStates} />
-              )}
-            />
+            <select
+              id="state"
+              className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
+              {...register("state")}
+            >
+              {usStates.map((state) => (
+                <option value={state.value} key={state.value}>
+                  {state.label}
+                </option>
+              ))}
+            </select>
           </div>
           <Input label="Zipcode" id="zipCode" register={register} />
         </fieldset>
-
         <div>
           <label htmlFor="department">Department</label>
-          <Controller
-            name="department"
-            control={control}
-            render={({ field }) => (
-              <Select inputId="department" {...field} options={companyDepartments} />
-            )}
-          />
+          <select
+            id="department"
+            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
+            {...register("department")}
+          >
+            {companyDepartments.map((department) => (
+              <option value={department.value} key={department.value}>
+                {department.label}
+              </option>
+            ))}
+          </select>
         </div>
-
         <input
           className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
           type="submit"
@@ -134,8 +107,8 @@ export default function CreateEmployee() {
         </button>
       </form>
       <ModalDialog
-        isModalVisible={isModalVisible}
-        closeModal={closeModal}
+        isDialogVisible={isDialogVisible}
+        closeDialog={closeDialog}
         dialogClassName="max-w-md rounded-xl p-0 backdrop:bg-black/60"
         divClassName="flex flex-col p-6 gap-2 justify-between items-center"
       >
@@ -146,7 +119,7 @@ export default function CreateEmployee() {
         </p>
         <button
           className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
-          onClick={closeModal}
+          onClick={closeDialog}
         >
           Close
         </button>
