@@ -2,23 +2,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
 import { usStates } from "../data/usStates";
-import "react-datepicker/dist/react-datepicker.css";
 import React, { useState } from "react";
 import ModalDialog from "react-basic-modal-dialog";
 import { companyDepartments } from "../data/companyDepartments";
 import Input from "../components/Input";
-import DateInput from "../components/DateInput";
 
 export default function CreateEmployee() {
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
-  const [startDate, setStartDate] = useState();
-  const [dateOfBirth, setDateOfBirth] = useState();
   const [isDialogVisible, setIsDialogVisible] = useState(false);
 
   const openDialog = () => setIsDialogVisible(true);
@@ -45,20 +36,8 @@ export default function CreateEmployee() {
           required
         />
         <Input label="Last name*" id="lastName" register={register} required />
-        <DateInput
-          control={control}
-          label="Date of birth"
-          id="dateOfBirth"
-          dateState={dateOfBirth}
-          setDateState={setDateOfBirth}
-        />
-        <DateInput
-          control={control}
-          label="Start date"
-          id="startDate"
-          dateState={startDate}
-          setDateState={setStartDate}
-        />
+        <Input label="Date of birth" id="dateOfBirth" type="date" register={register} />
+        <Input label="Start date" id="startDate" type="date" register={register} />
         <div>
           <label htmlFor="department">Department</label>
           <select
@@ -113,16 +92,14 @@ export default function CreateEmployee() {
             reset({
               firstName: "",
               lastName: "",
-              dateOfBirth: null,
-              startDate: null,
+              dateOfBirth: "",
+              startDate: "",
               department: "",
               street: "",
               city: "",
               state: "",
               zipCode: "",
             });
-            setStartDate(undefined);
-            setDateOfBirth(undefined);
           }}
         />
       </form>
