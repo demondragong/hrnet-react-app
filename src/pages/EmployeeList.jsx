@@ -14,7 +14,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import { useSelector } from "react-redux";
-import { mockEmployees } from "../data/mockEmployees";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -138,13 +137,13 @@ export default function EmployeeList() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchString, setSearchString] = React.useState("");
 
-    const rows = useSelector((state) => state.employees);
-  // const rows = mockEmployees.filter((employee) =>
-  //   Object.values(employee)
-  //     .toString()
-  //     .toLowerCase()
-  //     .includes(searchString.toLowerCase())
-  // );
+  const employees = useSelector((state) => state.employees);
+  const rows = employees.filter((employee) =>
+    Object.values(employee)
+      .toString()
+      .toLowerCase()
+      .includes(searchString.toLowerCase())
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

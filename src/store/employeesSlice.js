@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { mockEmployees } from '../data/mockEmployees'
 
-const initialState = []
+const initialState = mockEmployees
 
 export const employeesSlice = createSlice({
   name: 'employees',

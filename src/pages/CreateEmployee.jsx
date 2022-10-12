@@ -8,18 +8,25 @@ import { companyDepartments } from "../data/companyDepartments";
 import Input from "../components/Input";
 
 export default function CreateEmployee() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, formState } = useForm();
 
   const [isDialogVisible, setIsDialogVisible] = useState(false);
-
   const openDialog = () => setIsDialogVisible(true);
   const closeDialog = () => setIsDialogVisible(false);
 
   const dispatch = useDispatch();
+  
   const onSubmit = (data) => {
     dispatch(addEmployee(data));
     openDialog();
   };
+
+  // reset (empty) form fields on sucessful form submission
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset();
+    }
+  }, [formState, reset]);
 
   return (
     <main className="max-w-sm m-auto">
