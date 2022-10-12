@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 
 const DateInput = ({ control, label, id, dateState, setDateState }) => (
   <>
-    <label htmlFor={id} className="mt-5">
+    <label htmlFor={id}>
       {label}
     </label>
     <Controller
@@ -13,7 +13,7 @@ const DateInput = ({ control, label, id, dateState, setDateState }) => (
         <ReactDatePicker
           id={id}
           autoComplete="off"
-          className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
+          className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg mb-4"
           onChange={(date) => {
             setDateState(date);
             return onChange(date.toLocaleDateString("en-US"));

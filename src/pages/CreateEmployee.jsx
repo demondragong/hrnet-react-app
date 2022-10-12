@@ -3,11 +3,8 @@ import { useDispatch } from "react-redux";
 import { addEmployee } from "../store/employeesSlice";
 import { usStates } from "../data/usStates";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
-import Select from "react-select";
 import React, { useEffect, useState } from "react";
-// import ModalDialog from "../components/ModalDialog";
 import ModalDialog from "react-basic-modal-dialog";
 import { companyDepartments } from "../data/companyDepartments";
 import Input from "../components/Input";
@@ -18,6 +15,7 @@ export default function CreateEmployee() {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -37,7 +35,7 @@ export default function CreateEmployee() {
   return (
     <main className="max-w-sm m-auto">
       <h1 className="text-2xl font-medium">Create an employee</h1>
-      <p className="text-gray-700">
+      <p className="text-gray-700 mb-5">
         Fields marked with an asterisk are mandatory.
       </p>
       {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
@@ -63,18 +61,38 @@ export default function CreateEmployee() {
           dateState={startDate}
           setDateState={setStartDate}
         />
-
-        <fieldset>
-          <legend>Address</legend>
-          <Input label="Street" id="street" register={register} />
+        <div>
+          <label htmlFor="department">Department</label>
+          <select
+            id="department"
+            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg mb-4"
+            {...register("department")}
+          >
+            <option value=""></option>
+            {companyDepartments.map((department) => (
+              <option value={department.value} key={department.value}>
+                {department.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <fieldset className="border-t border-gray-300">
+          <legend className="text-center">Address</legend>
+          <Input
+            label="Street"
+            id="street"
+            className="mb-2"
+            register={register}
+          />
           <Input label="City" id="city" register={register} />
           <div>
             <label htmlFor="state">State</label>
             <select
               id="state"
-              className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
+              className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg mb-4"
               {...register("state")}
             >
+              <option value=""></option>
               {usStates.map((state) => (
                 <option value={state.value} key={state.value}>
                   {state.label}
@@ -84,27 +102,31 @@ export default function CreateEmployee() {
           </div>
           <Input label="Zipcode" id="zipCode" register={register} />
         </fieldset>
-        <div>
-          <label htmlFor="department">Department</label>
-          <select
-            id="department"
-            className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
-            {...register("department")}
-          >
-            {companyDepartments.map((department) => (
-              <option value={department.value} key={department.value}>
-                {department.label}
-              </option>
-            ))}
-          </select>
-        </div>
+
         <input
           className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
           type="submit"
         />
-        <button className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg">
-          Clear fields
-        </button>
+        <input
+          className="w-full bg-gray-600 text-white font-semibold p-2.5 mt-4 rounded-lg"
+          type="button"
+          value="Clear fields"
+          onClick={() => {
+            reset({
+              firstName: "",
+              lastName: "",
+              dateOfBirth: null,
+              startDate: null,
+              department: "",
+              street: "",
+              city: "",
+              state: "",
+              zipCode: "",
+            });
+            setStartDate(undefined);
+            setDateOfBirth(undefined);
+          }}
+        />
       </form>
       <ModalDialog
         isDialogVisible={isDialogVisible}

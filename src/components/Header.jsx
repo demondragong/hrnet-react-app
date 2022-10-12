@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Icon from "./Icon.jsx";
 
 export default function Header() {
@@ -8,8 +8,8 @@ export default function Header() {
         <Icon />
       </Link>
       <nav>
-        <Link to="/">Home</Link> |{" "}
-        <Link to="/employee-list">Employee list</Link>
+        <NavLink to="/">Home</NavLink> |{" "}
+        <NavLink to="/employee-list">Employee list</NavLink>
       </nav>
     </header>
   );

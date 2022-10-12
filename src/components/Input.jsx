@@ -1,11 +1,9 @@
 const Input = ({ label, id, register, required }) => (
   <>
-    <label htmlFor={id} className="mt-5">
-      {label}
-    </label>
+    <label htmlFor={id}>{label}</label>
     <input
       id={id}
-      className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg"
+      className="block w-full border border-gray-300 h-11 py-2.5 px-3.5 rounded-lg mb-4"
       autoComplete="off"
       {...register(id, { required })}
     />
