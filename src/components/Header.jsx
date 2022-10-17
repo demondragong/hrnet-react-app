@@ -4,7 +4,7 @@ import Icon from "./Icon.jsx";
 export default function Header() {
   return (
     <header className="my-5 flex flex-row justify-between items-center">
-      <Link to="/">
+      <Link to="/" aria-label="Home page">
         <Icon />
       </Link>
       <nav>

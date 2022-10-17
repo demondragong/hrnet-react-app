@@ -6,16 +6,24 @@ import React, { useState } from "react";
 import ModalDialog from "react-basic-modal-dialog";
 import { companyDepartments } from "../data/companyDepartments";
 import Input from "../components/Input";
+import { Helmet } from 'react-helmet-async';
+
 
 export default function CreateEmployee() {
-  const { register, handleSubmit, reset, formState } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState,
+    formState: { errors },
+  } = useForm();
 
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const openDialog = () => setIsDialogVisible(true);
   const closeDialog = () => setIsDialogVisible(false);
 
   const dispatch = useDispatch();
-  
+
   const onSubmit = (data) => {
     dispatch(addEmployee(data));
     openDialog();
@@ -30,6 +38,10 @@ export default function CreateEmployee() {
 
   return (
     <main className="max-w-sm m-auto">
+      <Helmet>
+        <title>Create an employee - HRnet</title>
+        <meta name="description" content="HRnet's page to create an employee" />
+      </Helmet>
       <h1 className="text-2xl font-medium">Create an employee</h1>
       <p className="text-gray-700 mb-5">
         Fields marked with an asterisk are mandatory.
@@ -40,11 +52,28 @@ export default function CreateEmployee() {
           label="First name*"
           id="firstName"
           register={register}
-          required
+          errors={errors}
+          required={"First name is required."}
         />
-        <Input label="Last name*" id="lastName" register={register} required />
-        <Input label="Date of birth" id="dateOfBirth" type="date" register={register} />
-        <Input label="Start date" id="startDate" type="date" register={register} />
+        <Input
+          label="Last name*"
+          id="lastName"
+          register={register}
+          errors={errors}
+          required={"Last name is required."}
+        />
+        <Input
+          label="Date of birth"
+          id="dateOfBirth"
+          type="date"
+          register={register}
+        />
+        <Input
+          label="Start date"
+          id="startDate"
+          type="date"
+          register={register}
+        />
         <div>
           <label htmlFor="department">Department</label>
           <select
@@ -84,7 +113,16 @@ export default function CreateEmployee() {
               ))}
             </select>
           </div>
-          <Input label="Zipcode" id="zipCode" register={register} />
+          <Input
+            label="Zipcode"
+            id="zipCode"
+            register={register}
+            errors={errors}
+            pattern={{
+              value: /[0-9]{5}/,
+              message: "Enter a 5-digit zipcode.",
+            }}
+          />
         </fieldset>
 
         <input

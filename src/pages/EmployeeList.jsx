@@ -14,6 +14,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import { useSelector } from "react-redux";
+import { Helmet } from 'react-helmet-async';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -174,6 +176,10 @@ export default function EmployeeList() {
 
   return (
     <>
+      <Helmet>
+        <title>View employees - HRnet</title>
+        <meta name="description" content="HRnet's page to view employees" />
+      </Helmet>
       <input
         id="search"
         placeholder="Search employees..."
